@@ -6,7 +6,11 @@ import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import CssBaseline from "@mui/material/CssBaseline";
 import Bar from "./componenets/Bar";
-import Typography from '@mui/material/Typography';
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -16,7 +20,7 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-const Div = styled('div')(({ theme }) => ({
+const Div = styled("div")(({ theme }) => ({
   ...theme.typography.button,
   backgroundColor: theme.palette.background.paper,
   padding: theme.spacing(1),
@@ -28,16 +32,30 @@ function App() {
       <Bar></Bar>
       <CssBaseline />
       <Container maxWidth="sm" sx={{ p: 2 }}>
-      <Typography variant="h2" gutterBottom>
-        h1. Heading
-      </Typography>
+        <Typography variant="h3" align="center" gutterBottom>
+          Certification Manager
+        </Typography>
         <Box sx={{ flexGrow: 1 }}>
-          <Grid container spacing={2}>
+          <Grid container spacing={34}>
             <Grid item xs={6}>
-              <Item><Div>{"This div's text looks like that of a button."}</Div></Item>
+              <Card sx={{ minWidth: 375 , p: 2}}>
+                <CardContent>
+                  <Div>{"Request a new certificate"}</Div>
+                </CardContent>
+                <CardActions>
+                  <Button variant="outlined">Request</Button>
+                </CardActions>
+              </Card>
             </Grid>
             <Grid item xs={6}>
-              <Item><Div>{"This div's text looks like that of a button."}</Div></Item>
+                <Card sx={{ minWidth: 375, p: 2 }}>
+                  <CardContent>
+                    <Div>{"List of requested certificates"}</Div>
+                  </CardContent>
+                  <CardActions>
+                    <Button variant="outlined">Show</Button>
+                  </CardActions>
+                </Card>
             </Grid>
           </Grid>
         </Box>
