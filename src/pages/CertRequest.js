@@ -1,4 +1,4 @@
-import React from "react"
+import React from "react";
 import {
   Grid,
   makeStyles,
@@ -11,12 +11,13 @@ import {
   Button,
   CardHeader,
   FormControl,
-} from "@material-ui/core"
-
-import { Formik, Form, Field } from "formik"
-import * as Yup from "yup"
-import { TextField } from "formik-material-ui"
-
+} from "@material-ui/core";
+import { Formik, Form, Field } from "formik";
+import * as Yup from "yup";
+import { TextField } from "formik-material-ui";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 const useStyle = makeStyles((theme) => ({
   padding: {
     padding: theme.spacing(3),
@@ -24,154 +25,108 @@ const useStyle = makeStyles((theme) => ({
   button: {
     margin: theme.spacing(1),
   },
-}))
+}));
 
 //Data
 const initialValues = {
-  firstName: "",
-  lastName: "",
-  occupation: "",
-  city: "",
-  country: "",
-  email: "",
-  password: "",
-}
-
-const options = [
-  { label: "Computer Programmer", value: "Computer_programmer" },
-  { label: "Web Developer", value: "web_developer" },
-  { label: "User Experience Designer", value: "user_experience_designer" },
-  { label: "Systems Analyst", value: "systems_analyst" },
-  { label: "Quality Assurance Tester", value: "quality_assurance_tester" },
-]
-
-//password validation
-const lowercaseRegEx = /(?=.*[a-z])/
-const uppercaseRegEx = /(?=.*[A-Z])/
-const numericRegEx = /(?=.*[0-9])/
-const lengthRegEx = /(?=.{6,})/
+  addressTo: "",
+  purpose: "",
+  issuedOn: "",
+  employeeId: "",
+};
 
 //validation schema
 let validationSchema = Yup.object().shape({
-  firstName: Yup.string().required("Required"),
-  lastName: Yup.string().required("Required"),
-  email: Yup.string().email("Invalid email").required("Required"),
-  password: Yup.string()
-    .matches(
-      lowercaseRegEx,
-      "Must contain one lowercase alphabetical character!"
-    )
-    .matches(
-      uppercaseRegEx,
-      "Must contain one uppercase alphabetical character!"
-    )
-    .matches(numericRegEx, "Must contain one numeric character!")
-    .matches(lengthRegEx, "Must contain 6 characters!")
-    .required("Required!"),
-})
+  addressTo: Yup.string().required("Required"),
+  purpose: Yup.string()
+    .required("Required")
+    .min(50, "must be at least 50 characters long"),
+  issuedOn: Yup.date()
+    .min(new Date(), "Date must be in the future")
+    .required("Required"),
+  employeeId: Yup.number().required("Required"),
+});
 
 const CertRequestForm = () => {
-  const classes = useStyle()
+  const classes = useStyle();
 
   const onSubmit = (values) => {
-    console.log(values)
-  }
+    console.log(values);
+  };
 
   return (
-    <Grid container justify="center" spacing={1}>
+    <Grid container justifyContent="center" spacing={1}>
       <Grid item md={6}>
         <Card className={classes.padding}>
-          <CardHeader title="REGISTER FORM"></CardHeader>
+          <CardHeader title="Request Certifcate"></CardHeader>
           <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
-            onSubmit={onSubmit}>
-            {({ dirty, isValid, values, handleChange, handleBlur }) => {
+            onSubmit={onSubmit}
+          >
+            {({
+              dirty,
+              isValid,
+              values,
+              handleChange,
+              handleBlur,
+              setFieldValue,
+            }) => {
               return (
                 <Form>
                   <CardContent>
-                    <Grid item container spacing={1} justify="center">
-                      <Grid item xs={12} sm={6} md={6}>
+                    <Grid item container spacing={3} justifyContent="center">
+                      <Grid item xs={12} sm={6} md={12}>
                         <Field
-                          label="First Name"
+                          label="Address to"
                           variant="outlined"
                           fullWidth
-                          name="firstName"
-                          value={values.firstName}
+                          name="addressTo"
+                          value={values.addressTo}
                           component={TextField}
                         />
                       </Grid>
-                      <Grid item xs={12} sm={6} md={6}>
+                      <Grid item xs={12} sm={6} md={12}>
                         <Field
-                          label="Last Name"
+                          label="Purpose"
                           variant="outlined"
                           fullWidth
-                          name="lastName"
-                          value={values.lastName}
+                          name="purpose"
+                          value={values.purpose}
                           component={TextField}
                         />
                       </Grid>
 
                       <Grid item xs={12} sm={6} md={12}>
-                        <FormControl fullWidth variant="outlined">
-                          <InputLabel id="demo-simple-select-outlined-label">
-                            Occupation
-                          </InputLabel>
-                          <Select
-                            labelId="demo-simple-select-outlined-label"
-                            id="demo-simple-select-outlined"
-                            label="Occupation"
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            value={values.occupation}
-                            name="occupation">
-                            <MenuItem>None</MenuItem>
-                            {options.map((item) => (
-                              <MenuItem key={item.value} value={item.value}>
-                                {item.label}
-                              </MenuItem>
-                            ))}
-                          </Select>
-                        </FormControl>
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                          <DatePicker
+                            variant="outlined"
+                            name="Issued On"
+                            label="Issued On"
+                            inputFormat="MM/dd/yyyy"
+                            value={values.issuedOn}
+                            onChange={(newValue) =>
+                              setFieldValue("issuedOn", newValue)
+                            }
+                            renderInput={(params) => (
+                              <Field
+                                {...params}
+                                fullWidth
+                                variant="outlined"
+                                name="issuedOn"
+                                component={TextField}
+                              />
+                            )}
+                          />
+                        </LocalizationProvider>
                       </Grid>
-                      <Grid item xs={12} sm={6} md={6}>
+                      <Grid item xs={12} sm={6} md={12}>
                         <Field
-                          label="City"
+                          label="Employee Id"
                           variant="outlined"
                           fullWidth
-                          name="city"
-                          value={values.city}
-                          component={TextField}
-                        />
-                      </Grid>
-                      <Grid item xs={12} sm={6} md={6}>
-                        <Field
-                          label="Country"
-                          variant="outlined"
-                          fullWidth
-                          name="country"
-                          value={values.country}
-                          component={TextField}
-                        />
-                      </Grid>
-                      <Grid item xs={12} sm={6} md={6}>
-                        <Field
-                          label="Email"
-                          variant="outlined"
-                          fullWidth
-                          name="email"
-                          value={values.email}
-                          component={TextField}
-                        />
-                      </Grid>
-                      <Grid item xs={12} sm={6} md={6}>
-                        <Field
-                          label="Password"
-                          variant="outlined"
-                          fullWidth
-                          name="password"
-                          value={values.password}
-                          type="password"
+                          name="employeeId"
+                          value={values.employeeId}
                           component={TextField}
                         />
                       </Grid>
@@ -183,18 +138,19 @@ const CertRequestForm = () => {
                       variant="contained"
                       color="primary"
                       type="Submit"
-                      className={classes.button}>
+                      className={classes.button}
+                    >
                       REGISTER
                     </Button>
                   </CardActions>
                 </Form>
-              )
+              );
             }}
           </Formik>
         </Card>
       </Grid>
     </Grid>
-  )
-}
+  );
+};
 
-export default CertRequestForm
+export default CertRequestForm;
