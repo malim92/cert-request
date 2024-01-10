@@ -1,4 +1,5 @@
 import React from "react";
+import axios from 'axios';
 import {
   Grid,
   makeStyles,
@@ -50,9 +51,26 @@ let validationSchema = Yup.object().shape({
 const CertRequestForm = () => {
   const classes = useStyle();
 
-  const onSubmit = (values) => {
-    console.log(values);
+  const onSubmit = async (values) => {
+    console.log(JSON.stringify(values), 'Form values');
+    try {
+      const response = await axios.post('http://localhost:3001/api/submit-form', values, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    console.log( 'response.data', response.data);
+      if (response.ok) {
+        console.log('Form submitted successfully');
+
+      } else {
+        console.error('Form submission failed');
+      }
+    } catch (error) {
+      console.error('Error during form submission', error);
+    }
   };
+  
 
   return (
     <Grid container justifyContent="center" spacing={1}>
