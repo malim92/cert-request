@@ -64,7 +64,7 @@ const CertRequestForm = () => {
         console.log('Form submitted successfully');
 
       } else {
-        console.error('Form submission failed');
+        console.error('Form submission failed', response);
       }
     } catch (error) {
       console.error('Error during form submission', error);

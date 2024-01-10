@@ -56,7 +56,8 @@ function Home() {
                     <Div>{"List of requested certificates"}</Div>
                   </CardContent>
                   <CardActions>
-                    <Button variant="outlined">Show</Button>
+                    <Link to='/list-cert'><Button variant="outlined">Show</Button></Link>
+
                   </CardActions>
                 </Card>
             </Grid>
