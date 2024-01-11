@@ -6,11 +6,12 @@ import {
 } from "material-react-table";
 import { fetchCert } from "../Api/fetchCert";
 import { CertColumns } from "./CertColumns";
-import Popup from "../componenets/popup";
 import { Info } from "@mui/icons-material";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import PdfGenerator from "../componenets/PdfGenerator";
+import Button from "@mui/material/Button";
 
 const style = {
   position: "absolute",
@@ -154,7 +155,12 @@ const CertTable = () => {
           <div style={{ display: "flex", alignItems: "center" }}>
             <Typography id="modal-modal-description" sx={{ marginLeft: 2 }}>
               {Cert.status == "Done" ? (
-                <p>This content is rendered when the condition is true.</p>
+                <Button
+                  variant="outlined"
+                  onClick={() => PdfGenerator({ Cert })}
+                >
+                  <p>Generate PDF Certificate</p>
+                </Button>
               ) : (
                 <p>Certificate is yet to be issued</p>
               )}
