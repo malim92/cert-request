@@ -61,7 +61,7 @@ const CertRequestForm = () => {
     });
     console.log( 'response.data', response.data);
       if (response.ok) {
-        console.log('Form submitted successfully');
+        alert('Form submitted successfully');
 
       } else {
         console.error('Form submission failed', response);
